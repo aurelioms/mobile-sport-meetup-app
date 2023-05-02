@@ -1,0 +1,21 @@
+export const ROUTES = {
+  REGISTER: "register",
+  LOGIN: "login",
+  ACCOUNT_VERIFICATION: "account-verification",
+  FORGET_PASSWORD: "forget-password",
+  FORGET_PASSWORD_OTP: "forget-password-otp",
+  RESET_PASSWORD: "reset-password",
+  APP_TAB: {
+    INDEX: "app-tab",
+    HOME: "home",
+    PROFILE: "profile",
+    EXPLORE: "explore",
+  },
+  EVENT_DETAILS: "event-details",
+  EVENT_PARTICIPANTS: "event-participants",
+  CHANGE_PASSWORD: "change-password",
+  CREATE_EVENT: "create-event",
+  UPDATE_EVENT: "update-event",
+  UPDATE_PROFILE: "update-profile",
+  COMMENT: "comment",
+};

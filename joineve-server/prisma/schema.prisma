@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String       @id
+  name               String
+  email              String
+  password           String
+  gender             String?
+  profileImagePath   String?
+  birthDate          DateTime?
+  createdSportEvents SportEvent[] @relation(name: "createdSportEvents")
+  joinedSportEvents  SportEvent[] @relation(name: "joinedSportEvents")
+  isVerified         Boolean      @default(false)
+  otpCode            OtpCode[]
+  comments           Comment[]
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime?
+}
+
+model SportType {
+  id          String       @id
+  name        String
+  sportEvents SportEvent[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?
+}
+
+model SportEvent {
+  id                String     @id
+  name              String
+  description       String
+  sportTypeId       String?
+  sportType         SportType? @relation(fields: [sportTypeId], references: [id], onDelete: NoAction)
+  hostId            String
+  host              User       @relation(fields: [hostId], references: [id], onDelete: NoAction, name: "createdSportEvents")
+  startAt           DateTime
+  endAt             DateTime
+  maxParticipant    Int
+  participants      User[]     @relation(name: "joinedSportEvents")
+  Comment           Comment[]
+  addressStreet     String?
+  addressCity       String?
+  addressPostalCode String?
+  longitude         Decimal    @db.Decimal(20, 16)
+  latitude          Decimal    @db.Decimal(20, 16)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime?
+  cancelledAt       DateTime?
+}
+
+model Comment {
+  id           String     @id
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: NoAction)
+  sportEventId String
+  sportEvent   SportEvent @relation(fields: [sportEventId], references: [id], onDelete: NoAction)
+  content      String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?
+}
+
+model OtpCode {
+  id        String    @id
+  code      String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: NoAction)
+  expiredAt DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+}
